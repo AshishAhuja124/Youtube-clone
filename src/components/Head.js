@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toggleMenu } from '../store/appSlice';
 import { Link } from 'react-router-dom';
 import { YOUTUBE_SEARCH_SUGGESTIONS_API } from '../utils/constants';
 import { CiSearch } from "react-icons/ci";
 import { IoSearchSharp } from "react-icons/io5";
+import { cacheResults } from '../store/searchSlice';
 const Head = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const searchCache = useSelector(store => store.search);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
 
@@ -17,20 +21,31 @@ const Head = () => {
         //make an api call after every key press
         //but if the difference between 2api calls is <200ms
         //decline the API call
-        const timer = setTimeout(() => getSearchSuggestions(), 200);
+        const timer = setTimeout(() => {
+
+            if (searchCache[searchQuery]) {
+                setSuggestions(searchCache[searchQuery]);
+            } else {
+                getSearchSuggestions()
+            }
+        }, 200);
         return () => { //this function will called every time comoinent is rerendered
             clearTimeout(timer);
-        }
-    }, [searchQuery])
+        };
+    }, [searchQuery]);
 
     const getSearchSuggestions = async () => {
         console.log("Api call - " ,searchQuery);
         const data = await fetch(YOUTUBE_SEARCH_SUGGESTIONS_API + searchQuery);
         const json = await data.json();
         setSuggestions(json[1]);
+        //update cache
+        dispatch(cacheResults({
+            [searchQuery]: json[1],
+        }));
     }
 
-    const dispatch = useDispatch();
+    
     const toggleMenuHandler = () => {
         dispatch(toggleMenu());
     }
