@@ -9,10 +9,20 @@ import {
 import MainContainer from "./components/MainContainer";
 import WatchPage from "./components/VideosSection/WatchPage";
 
+
+const Layout = () => {
+  return (
+    <>
+      <Head />
+      <Body />
+    </>
+  );
+};
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
-    element: <Body />,
+    element: <Layout />,
     children: [
       {
         path: '/',
@@ -29,11 +39,7 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <Provider store={appStore}>
-      <div className="App">
-        <Head />
         <RouterProvider router={appRouter} />
-
-      </div>
     </Provider>
 
   );
