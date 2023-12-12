@@ -9,7 +9,7 @@ const Head = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const [suggestions, setSuggestions] = useState([]);
-
+    const [showSuggestions, setShowSuggestions] = useState(false);
 
     useEffect(() => {
 
@@ -59,12 +59,14 @@ const Head = () => {
                         type='text'
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
+                        onFocus={() => setShowSuggestions(true)}
+                        onBlur={() => setShowSuggestions(false)}
                     />
                     <button className=' border border-gray-400  bg-gray-100 pt-[11px] pb-[14px] px-5 items-center rounded-r-full'>
                     <IoSearchSharp className='2xl'/>
                     </button>
                 </div>
-                <div className='absolute py-2 px-2 bg-white w-[25.5rem] shadow-lg rounded-lg border border-gray-100'>
+                {showSuggestions && <div className='absolute py-2 px-2 bg-white w-[25.5rem] shadow-lg rounded-lg border border-gray-100'>
                     <ul>
                         {suggestions.map((s) => (
                             <li key={s} className='flex py-2 px-3 shadow-sm hover:bg-gray-100'>
@@ -75,7 +77,7 @@ const Head = () => {
                         
                         
                     </ul>
-                </div>
+                </div>}
             </div>
 
             <div className='col-span-1'>
