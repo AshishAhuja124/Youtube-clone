@@ -9,6 +9,7 @@ import {
 import MainContainer from "./components/MainContainer";
 import WatchPage from "./components/VideosSection/WatchPage";
 import Demo from "./components/Demo";
+import Demo2 from "./components/Demo2";
 
 const Layout = () => {
   return (
@@ -35,7 +36,12 @@ const appRouter = createBrowserRouter([
 
       {
         path: '/demo',
-        element: <Demo />
+        element: (
+          <>
+            <Demo />
+            <Demo2 />
+          </>
+        )
       }
     ]
   }
