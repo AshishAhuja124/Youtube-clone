@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import MainContainer from "./components/MainContainer";
 import WatchPage from "./components/VideosSection/WatchPage";
-
+import Demo from "./components/Demo";
 
 const Layout = () => {
   return (
@@ -31,6 +31,11 @@ const appRouter = createBrowserRouter([
       {
         path: '/watch',
         element: <WatchPage />
+      },
+
+      {
+        path: '/demo',
+        element: <Demo />
       }
     ]
   }
